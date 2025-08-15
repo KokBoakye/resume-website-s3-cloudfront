@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "resume_website" {
   }
 
   tags = {
-    Name        = "Kwabena's Resume Website"
+    Name        = "Kwabena-Resume-Website"
   }
 }
 
