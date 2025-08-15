@@ -20,13 +20,11 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
     Statement = [
       {
         Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::914559461558:role/GithubActions"
-        }
+        Principal = "*"
+         
         Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject"
+          "s3:PutObject"
+         
         ]
         Resource = "${aws_s3_bucket.resume_website.arn}/*"
       }
