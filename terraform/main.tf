@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "resume_website" {
   bucket = "kwabena-resume-website-15-08-2024"
-  acl = "public-read"
+  
 
 
   website {
