@@ -21,7 +21,7 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
       {
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::<AWS_ACCOUNT_ID>:role/<YourOIDCRoleName>"
+          AWS = "arn:aws:iam::914559461558:role/GithubActions"
         }
         Action = [
           "s3:PutObject",
