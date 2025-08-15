@@ -1,0 +1,48 @@
+name: Deploying Resume Website
+
+on:
+    push:
+        branches:
+            - main
+permissions:
+    contents: read
+    id-token: write
+    
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                  terraform_version: 1.5.0
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                role-to-assume: arn:aws:iam::914559461558:role/GithubActions
+                aws-region: eu-north-1
+
+            - name: Create s3 bucket for Terraform state
+              run: |
+                aws s3api create-bucket --bucket resume-website-terraform-state-15-08-2024 --region eu-north-1 --create-bucket-configuration LocationConstraint=eu-north-1 || true
+
+            - name: Initialize Terraform
+              run: terraform init
+
+            - name: Validate Terraform configuration
+              run: terraform validate
+
+            - name: Plan Terraform deployment
+              run: terraform plan
+
+            - name: Apply Terraform deployment
+              run: terraform apply -auto-approve
+
+            - name: Sync files to S3
+              run: |
+                aws s3 sync ./website s3://kwabena-resume-website-15-08-2024/ --delete
