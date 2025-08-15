@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "resume_website" {
   bucket = "kwabena-resume-website-15-08-2024"
-  
+  acl = "public-read"
+
 
   website {
     index_document = "index.html"
@@ -12,31 +13,31 @@ resource "aws_s3_bucket" "resume_website" {
   }
 }
 
-resource "aws_s3_bucket_policy" "website_bucket_policy" {
-  bucket = aws_s3_bucket.resume_website.id
+# resource "aws_s3_bucket_policy" "website_bucket_policy" {
+#   bucket = aws_s3_bucket.resume_website.id
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = "*"
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Principal = "*"
          
-        Action = [
-          "s3:PutObject"
+#         Action = [
+#           "s3:PutObject"
          
-        ]
-        Resource = "${aws_s3_bucket.resume_website.arn}/*"
-      }
-    ]
-  })
-}
+#         ]
+#         Resource = "${aws_s3_bucket.resume_website.arn}/*"
+#       }
+#     ]
+#   })
+# }
 
-resource "aws_s3_bucket_public_access_block" "resume_website" {
-  bucket = aws_s3_bucket.resume_website.id
+# resource "aws_s3_bucket_public_access_block" "resume_website" {
+#   bucket = aws_s3_bucket.resume_website.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
+#   block_public_acls       = false
+#   block_public_policy     = false
+#   ignore_public_acls      = false
+#   restrict_public_buckets = false
+# }
