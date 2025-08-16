@@ -32,7 +32,7 @@ jobs:
                 aws s3api create-bucket --bucket resume-website-terraform-state-15-08-2024 --region us-east-1 --create-bucket-configuration LocationConstraint=eu-north-1 || true
 
             - name: Initialize Terraform
-              run: terraform -chdir=terraform init
+              run: terraform -chdir=terraform init -migrate-state
 
             - name: Terraform Validate
               run: terraform -chdir=terraform validate
