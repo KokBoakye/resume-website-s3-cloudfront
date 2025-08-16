@@ -74,7 +74,7 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
   }
 
   visibility_config {
-    cloud_watch_metrics_enabled = true
+    cloudwatch_metrics_enabled = true
     metric_name                 = "resumeWebsiteWAF"
     sampled_requests_enabled    = true
   }
@@ -92,7 +92,7 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
       }
     }
     visibility_config {
-      cloud_watch_metrics_enabled = true
+      cloudwatch_metrics_enabled = true
       metric_name                 = "commonRuleSet"
       sampled_requests_enabled    = true
     }
