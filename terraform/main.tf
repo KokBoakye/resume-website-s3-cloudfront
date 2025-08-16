@@ -64,6 +64,42 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
   })
 }
 
+resource "aws_wafv2_web_acl" "resume_website_waf" {
+  name        = "resume-website-waf"
+  description = "WAF for Resume Website"
+  scope       = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
+
+  visibility_config {
+    cloud_watch_metrics_enabled = true
+    metric_name                 = "resumeWebsiteWAF"
+    sampled_requests_enabled    = true
+  }
+
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 1
+    override_action {
+      none {}
+    }
+    statement {
+      managed_rule_group_statement {
+        vendor_name = "AWS"
+        name        = "AWSManagedRulesCommonRuleSet"
+      }
+    }
+    visibility_config {
+      cloud_watch_metrics_enabled = true
+      metric_name                 = "commonRuleSet"
+      sampled_requests_enabled    = true
+    }
+  }
+}
+
+
 resource "aws_cloudfront_distribution" "resume_website_distribution" {
   origin {
     domain_name = aws_s3_bucket.resume_website.bucket_regional_domain_name
@@ -104,6 +140,33 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.resume_website_cert.arn
+    ssl_support_method   = "sni-only"
+  }
+
+  web_acl_id = aws_wafv2_web_acl.resume_website_waf.arn
+}
+
+resource "aws_route53_zone" "resume_website" {
+  name = "solaris.com"
+}
+
+resource "aws_route53_record" "resume_website_alias" {
+  zone_id = aws_route53_zone.resume_website.zone_id
+  name    = "www.solaris.com"
+  type    = "A"
+  alias {
+    name                   = aws_cloudfront_distribution.resume_website_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.resume_website_distribution.hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_acm_certificate" "resume_website_cert" {
+  domain_name       = "www.solaris.com"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
