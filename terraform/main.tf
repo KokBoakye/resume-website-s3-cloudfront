@@ -163,7 +163,7 @@ resource "aws_route53_record" "resume_website_alias" {
 }
 
 resource "aws_acm_certificate" "resume_website_cert" {
-  domain_name       = "www.solaris.com"
+  domain_name       = "www.solaris.com"  # is solaris.com your own domain? This looks AI generated.
   validation_method = "DNS"
 
   lifecycle {
