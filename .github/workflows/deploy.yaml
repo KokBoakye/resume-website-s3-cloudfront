@@ -30,7 +30,7 @@ jobs:
             - name: Create s3 bucket for Terraform state
               run: |
                 aws s3api create-bucket --bucket resume-website-terraform-state-16-08-2024 --region us-east-1
-            - name: Initialize Terraform
+            - name: Initialize _Terraform
               run: terraform -chdir=terraform init -migrate-state
 
             - name: Terraform Validate
