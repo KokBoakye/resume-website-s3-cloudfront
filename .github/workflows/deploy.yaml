@@ -42,9 +42,9 @@ jobs:
             - name: Terraform destroy
               run: terraform -chdir=terraform destroy -auto-approve || true
 
-            - name: Terraform Apply
-              run: terraform -chdir=terraform apply -auto-approve
+            # - name: Terraform Apply
+            #   run: terraform -chdir=terraform apply -auto-approve
 
-            - name: Sync files to S3
-              run: |
-                aws s3 sync ./website s3://kwabena-resume-website-15-08-2024/ --delete
+            # - name: Sync files to S3
+            #   run: |
+            #     aws s3 sync ./website s3://kwabena-resume-website-15-08-2024/ --delete
