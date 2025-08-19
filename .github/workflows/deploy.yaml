@@ -24,7 +24,7 @@ jobs:
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v1
               with:
-                role-to-assume: arn:aws:iam::914559461558:role/GithubActions
+                role-to-assume: arn:aws:iam::604312263409:role/githubuser
                 aws-region: us-east-1
 
             - name: Create s3 bucket for Terraform state

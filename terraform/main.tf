@@ -116,6 +116,7 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
   viewer_certificate {
     
     ssl_support_method   = "sni-only"
+    cloudfront_default_certificate = true
   }
 
   web_acl_id = aws_wafv2_web_acl.resume_website_waf.arn
