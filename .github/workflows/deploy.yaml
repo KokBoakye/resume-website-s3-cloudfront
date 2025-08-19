@@ -33,17 +33,21 @@ jobs:
             - name: Initialize _Terraform
               run: terraform -chdir=terraform init -migrate-state
 
-            - name: Terraform Validate
-              run: terraform -chdir=terraform validate
+            - name: Terraform state
+              run: terraform state push errored.tfstate
 
-            - name: Terraform Plan
-              run: terraform -chdir=terraform plan
+            
+            # - name: Terraform Validate
+            #   run: terraform -chdir=terraform validate
 
-            - name: Terraform destroy
-              run: terraform -chdir=terraform destroy -auto-approve || true
+            # - name: Terraform Plan
+            #   run: terraform -chdir=terraform plan
 
-            - name: Terraform Apply
-              run: terraform -chdir=terraform apply -auto-approve
+            # - name: Terraform destroy
+            #   run: terraform -chdir=terraform destroy -auto-approve || true
+
+            # - name: Terraform Apply
+            #   run: terraform -chdir=terraform apply -auto-approve
 
             - name: Sync files to S3
               run: |
