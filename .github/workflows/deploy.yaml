@@ -1,4 +1,4 @@
-name: Deploying Resume-Website
+name: Deploying Resume Website
 
 on:
     push:
