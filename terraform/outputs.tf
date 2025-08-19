@@ -4,7 +4,7 @@ output "s3_endpoint" {
 }
 
 output "cloudfront_url" {
-  description = "The CloudFront URL for the resume website"
+  description = "The CloudFront URL  for the resume website"
   value       = aws_cloudfront_distribution.resume_website_distribution.domain_name
 }
 
