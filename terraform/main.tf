@@ -13,34 +13,7 @@ resource "aws_s3_bucket" "resume_website" {
   }
 }
 
-# resource "aws_s3_bucket_policy" "website_bucket_policy" {
-#   bucket = aws_s3_bucket.resume_website.id
 
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Effect = "Allow"
-#         Principal = "*"
-         
-#         Action = [
-#           "s3:PutObject"
-         
-#         ]
-#         Resource = "${aws_s3_bucket.resume_website.arn}/*"
-#       }
-#     ]
-#   })
-# }
-
-# resource "aws_s3_bucket_public_access_block" "resume_website" {
-#   bucket = aws_s3_bucket.resume_website.id
-
-#   block_public_acls       = false
-#   block_public_policy     = false
-#   ignore_public_acls      = false
-#   restrict_public_buckets = false
-# }
 
 resource "aws_cloudfront_origin_access_identity" "resume_website_oai" {
   comment = "OAI for Resume Website"
@@ -101,7 +74,7 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
 
 
 resource "aws_cloudfront_distribution" "resume_website_distribution" {
-  depends_on = [ aws_acm_certificate_validation.resume_website_cert_validation ]
+  
   origin {
     domain_name = aws_s3_bucket.resume_website.bucket_regional_domain_name
     origin_id   = "resume_website_origin"
@@ -148,49 +121,49 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
   web_acl_id = aws_wafv2_web_acl.resume_website_waf.arn
 }
 
-resource "aws_route53_zone" "resume_website" {
-  name = "solaris.com"
-}
+# resource "aws_route53_zone" "resume_website" {
+#   name = "solaris.com"
+# }
 
-resource "aws_route53_record" "resume_website_alias" {
-  zone_id = aws_route53_zone.resume_website.zone_id
-  name    = "www.solaris.com"
-  type    = "A"
-  alias {
-    name                   = aws_cloudfront_distribution.resume_website_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.resume_website_distribution.hosted_zone_id
-    evaluate_target_health = true
-  }
-}
+# resource "aws_route53_record" "resume_website_alias" {
+#   zone_id = aws_route53_zone.resume_website.zone_id
+#   name    = "www.solaris.com"
+#   type    = "A"
+#   alias {
+#     name                   = aws_cloudfront_distribution.resume_website_distribution.domain_name
+#     zone_id                = aws_cloudfront_distribution.resume_website_distribution.hosted_zone_id
+#     evaluate_target_health = true
+#   }
+# }
 
-resource "aws_acm_certificate" "resume_website_cert" {
+# resource "aws_acm_certificate" "resume_website_cert" {
  
-  domain_name       = "www.solaris.com"  # is solaris.com your own domain? This looks AI generated.
-  validation_method = "DNS"
+#   domain_name       = "www.solaris.com"  # is solaris.com your own domain? This looks AI generated.
+#   validation_method = "DNS"
 
-  lifecycle {
-    create_before_destroy = true
-  }
-}
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
 
-resource "aws_route53_record" "resume_website_cert_validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.resume_website_cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      type   = dvo.resource_record_type
-      record = dvo.resource_record_value
-      zone_id = aws_route53_zone.resume_website.zone_id
-    }
-  }
+# resource "aws_route53_record" "resume_website_cert_validation" {
+#   for_each = {
+#     for dvo in aws_acm_certificate.resume_website_cert.domain_validation_options : dvo.domain_name => {
+#       name   = dvo.resource_record_name
+#       type   = dvo.resource_record_type
+#       record = dvo.resource_record_value
+#       zone_id = aws_route53_zone.resume_website.zone_id
+#     }
+#   }
 
-  name    = each.value.name
-  type    = each.value.type
-  zone_id = each.value.zone_id
-  records = [each.value.record]
-  ttl     = 60
-}
+#   name    = each.value.name
+#   type    = each.value.type
+#   zone_id = each.value.zone_id
+#   records = [each.value.record]
+#   ttl     = 60
+# }
 
-resource "aws_acm_certificate_validation" "resume_website_cert_validation" {
-  certificate_arn         = aws_acm_certificate.resume_website_cert.arn
-  validation_record_fqdns = [for record in aws_route53_record.resume_website_cert_validation : record.fqdn]
-}
+# resource "aws_acm_certificate_validation" "resume_website_cert_validation" {
+#   certificate_arn         = aws_acm_certificate.resume_website_cert.arn
+#   validation_record_fqdns = [for record in aws_route53_record.resume_website_cert_validation : record.fqdn]
+# }
