@@ -101,6 +101,7 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
 
 
 resource "aws_cloudfront_distribution" "resume_website_distribution" {
+  depends_on = [ aws_acm_certificate_validation.resume_website_cert_validation ]
   origin {
     domain_name = aws_s3_bucket.resume_website.bucket_regional_domain_name
     origin_id   = "resume_website_origin"
