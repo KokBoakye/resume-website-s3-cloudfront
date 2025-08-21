@@ -38,7 +38,7 @@ jobs:
             - name: Terraform Validate
               run: terraform -chdir=terraform validate
 
-            - name: Terraform Plan
+            - name: Terraform  Plan
               run: terraform -chdir=terraform plan
 
             - name: Terraform destroy
