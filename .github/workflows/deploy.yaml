@@ -4,6 +4,17 @@ on:
     push:
         branches:
             - main
+    workflow_dispatch:
+      inputs:
+        action:
+          description: 'Select action to perform'
+          required: true
+          default: 'apply'
+          type: choice
+          options: 
+            - apply
+            - destroy
+          
 permissions:
     contents: read
     id-token: write
@@ -42,9 +53,11 @@ jobs:
               run: terraform -chdir=terraform plan
 
             - name: Terraform destroy
+              if: ${{ github.event.inputs.action == 'destroy' }}             
               run: terraform -chdir=terraform destroy -auto-approve || true
 
             - name: Terraform Apply
+              if: ${{ github.event.inputs.action == 'apply' }}             
               run: terraform -chdir=terraform apply -auto-approve
 
             - name: Sync files to S3
