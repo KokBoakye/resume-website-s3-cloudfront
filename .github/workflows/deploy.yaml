@@ -21,8 +21,15 @@ permissions:
     
 
 jobs:
-    deploy:
+    terraform:
         runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: terraform
+        
+
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
@@ -42,23 +49,23 @@ jobs:
               run: |
                 aws s3api create-bucket --bucket resume-website-terraform-state-16-08-2024 --region us-east-1
             - name: Initialize _Terraform
-              run: terraform -chdir=terraform init 
+              run: terraform init 
 
           
     
             - name: Terraform Validate
-              run: terraform -chdir=terraform validate
+              run: terraform validate
 
             - name: Terraform  Plan
-              run: terraform -chdir=terraform plan
+              run: terraform plan
 
             - name: Terraform destroy
               if: ${{ github.event.inputs.action == 'destroy' }}             
-              run: terraform -chdir=terraform destroy -auto-approve || true
+              run: terraform destroy -auto-approve || true
 
             - name: Terraform Apply
               if: ${{ github.event.inputs.action == 'apply' }}             
-              run: terraform -chdir=terraform apply -auto-approve
+              run: terraform apply -auto-approve
 
             - name: Sync files to S3
               run: |
