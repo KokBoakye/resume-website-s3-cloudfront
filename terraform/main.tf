@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "resume_website" {
   bucket = "kwabena-resume-website-16-08-2024"
-  
+
 
 
   website {
@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "resume_website" {
   }
 
   tags = {
-    Name        = "Kwabena Resume Website"
+    Name = "Kwabena-Resume-Website"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
         Principal = {
           AWS = aws_cloudfront_origin_access_identity.resume_website_oai.iam_arn
         }
-        Action = "s3:GetObject"
+        Action   = "s3:GetObject"
         Resource = "${aws_s3_bucket.resume_website.arn}/*"
       }
     ]
@@ -48,8 +48,8 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                 = "resumeWebsiteWAF"
-    sampled_requests_enabled    = true
+    metric_name                = "resumeWebsiteWAF"
+    sampled_requests_enabled   = true
   }
 
   rule {
@@ -66,15 +66,15 @@ resource "aws_wafv2_web_acl" "resume_website_waf" {
     }
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                 = "commonRuleSet"
-      sampled_requests_enabled    = true
+      metric_name                = "commonRuleSet"
+      sampled_requests_enabled   = true
     }
   }
 }
 
 
 resource "aws_cloudfront_distribution" "resume_website_distribution" {
-  
+
   origin {
     domain_name = aws_s3_bucket.resume_website.bucket_regional_domain_name
     origin_id   = "resume_website_origin"
@@ -114,8 +114,8 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
   }
 
   viewer_certificate {
-    
-    ssl_support_method   = "sni-only"
+
+    ssl_support_method             = "sni-only"
     cloudfront_default_certificate = true
   }
 
@@ -138,7 +138,7 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
 # }
 
 # resource "aws_acm_certificate" "resume_website_cert" {
- 
+
 #   domain_name       = "www.solaris.com"  # is solaris.com your own domain? This looks AI generated.
 #   validation_method = "DNS"
 
