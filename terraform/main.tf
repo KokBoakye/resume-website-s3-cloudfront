@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "resume_website" {
   }
 
   tags = {
-    Name = "Kwabena-Resume-Website"
+    Name = var.project_name
   }
 }
 
