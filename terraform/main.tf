@@ -3,14 +3,14 @@ resource "aws_s3_bucket" "resume_website" {
 
 
 
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
-  }
+  # website {
+  #   index_document = "index.html"
+  #   error_document = "error.html"
+  # }
 
-  tags = {
-    Name = var.project_name
-  }
+  # tags = {
+  #   Name = var.project_name
+  # }
 }
 
 
@@ -120,6 +120,10 @@ resource "aws_cloudfront_distribution" "resume_website_distribution" {
   }
 
   web_acl_id = aws_wafv2_web_acl.resume_website_waf.arn
+
+  tags = {
+    Name = var.project_name
+  }
 }
 
 # resource "aws_route53_zone" "resume_website" {
