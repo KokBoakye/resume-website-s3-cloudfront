@@ -34,7 +34,6 @@ https://www.yourdomain.com
 - **Route53** → Custom domain & DNS management.  
 - **WAF** → Protects against common web attacks (SQL injection, XSS, DDoS).  
 - **Security Groups** → Restrict access if EC2/ALB backend is added in future.  
-- **DynamoDB** → State locking for Terraform.  
 
 ---
 
