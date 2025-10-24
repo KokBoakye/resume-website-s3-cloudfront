@@ -62,18 +62,18 @@ resume-website-terraform/
 - **S3 Bucket** → Private (no public ACLs), accessible only via CloudFront OAI.  
 - **CloudFront + ACM** → Enforces HTTPS for all requests.  
 - **WAF** → Blocks SQLi, XSS, and common exploits.  
-- **Terraform State** → Stored in S3 with DynamoDB for state locking.  
-- **Security Groups** → Placeholder for EC2/ALB (not required for S3-only).  
+- **Terraform State** → Stored in S3 for state locking.  
+
 
 ---
 
 ## 🚀 Deployment Workflow (CI/CD with GitHub Actions)  
 
-1. **Push to main branch** → triggers `deploy.yml`.  
+1. **Push to dev branch** → triggers `deploy.yml`. PR > main 
 2. **Terraform Steps**:  
    - Configure AWS OIDC authentication.  
    - Create/Update infra (S3, CloudFront, WAF, Route53).  
-   - Store state in S3 with DynamoDB lock.  
+   - Store state in S3 with lock.  
 3. **Website Deployment**:  
    - Sync files in `/website` → S3 bucket.  
    - CloudFront cache invalidation.  
@@ -93,9 +93,9 @@ git clone https://github.com/<your-username>/resume-website-terraform.git
 cd resume-website-terraform
 
 3. Initialize Terraform
-terraform -chdir=terraform init
-terraform -chdir=terraform plan
-terraform -chdir=terraform apply
+terraform init
+terraform plan
+terraform apply
 
 
 4. Push Website Content
