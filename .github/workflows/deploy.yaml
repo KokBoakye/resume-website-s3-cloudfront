@@ -4,15 +4,7 @@ on:
     push:
         branches:
             - main
-    workflow_dispatch:
-      inputs:
-        action:
-          description: 'Select action to perform'
-          required: true
-          default: 'apply'
-          type: choice
-          options: 
-            - apply
+    
             
           
 permissions:
@@ -60,8 +52,7 @@ jobs:
               run: terraform plan
 
 
-            - name: Terraform Apply
-              if: ${{ github.event.inputs.action == 'apply' }}             
+            - name: Terraform Apply              
               run: terraform apply -auto-approve
 
             - name: Sync files to S3
