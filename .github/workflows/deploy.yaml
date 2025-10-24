@@ -3,7 +3,7 @@ name: Deploying Resume Website
 on:
     push:
         branches:
-            - dev
+            - main
     workflow_dispatch:
       inputs:
         action:
