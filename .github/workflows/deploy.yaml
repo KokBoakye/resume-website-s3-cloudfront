@@ -66,9 +66,9 @@ jobs:
 
             - name: Sync files to S3
               run: |
-                if aws s3api head-bucket --bucket kwabena-resume-website-16-08-2024 2>/dev/null; then
+                if aws s3api head-bucket --bucket kwabena-resume-website-25-10-2025 2>/dev/null; then
                     echo "Bucket exists, syncing website..."
-                    aws s3 sync ../website s3://kwabena-resume-website-16-08-2024/ --delete --region eu-north-1
+                    aws s3 sync ../website s3://kwabena-resume-website-25-10-2025/ --delete --region us-east-1
                 else
                     echo "Bucket does not exist, skipping sync."
                 fi
